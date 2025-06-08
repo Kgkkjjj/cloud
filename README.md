@@ -1,6 +1,6 @@
 # Simple PHP File Hosting Demo
 
-This repository contains a minimal PHP application that demonstrates a basic cloud storage system. Users can register, log in, upload files, and download them later. Uploaded files are stored on the server, and a small API endpoint returns a JSON list of a user's files. Additional metadata such as file size and type are tracked, and files can be deleted from the dashboard. A profile page allows password changes and a simple API provides programmatic upload and delete capabilities.
+This repository contains a minimal PHP application that demonstrates a basic cloud storage system. Users can register, log in, upload files, and download them later. Uploaded files are stored on the server, and a small API endpoint returns a JSON list of a user's files. Additional metadata such as file size and type are tracked, and files can be deleted from the dashboard. A profile page allows password changes and a simple API provides programmatic upload and delete capabilities. A new statistics page shows disk, memory, and load information for the server.
 
 ## Features
 - User registration and login using SQLite
@@ -9,12 +9,14 @@ This repository contains a minimal PHP application that demonstrates a basic clo
 - JSON API listing user files with metadata
 - Profile page with password change form
 - API endpoints for uploading and deleting files
+- Server statistics page with disk and memory usage
 
 ### APIs
 * `GET /api/files.php` - list your files
 * `POST /api/upload.php` with `file` field - upload new file
 * `POST /api/delete.php` with `id` - delete a file
 * `GET /api/profile.php` - current user details
+* `GET /api/stats.php` - server statistics
 
 ## Setup
 1. Ensure PHP with SQLite support is installed.
