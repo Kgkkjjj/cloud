@@ -22,4 +22,13 @@ function require_login() {
         exit;
     }
 }
+const MAX_STORAGE_BYTES = 30 * 1024 * 1024 * 1024; // 30 GiB per user
+
+function user_storage_used($userId) {
+    $db = get_db();
+    $stmt = $db->prepare('SELECT IFNULL(SUM(size),0) FROM files WHERE user_id = ?');
+    $stmt->execute([$userId]);
+    return (int)$stmt->fetchColumn();
+}
+
 ?>

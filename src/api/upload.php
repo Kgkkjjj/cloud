@@ -3,6 +3,7 @@ require_once '../config.php';
 require_login();
 header('Content-Type: application/json');
 $db = get_db();
+$usedBytes = user_storage_used(current_user()['id']);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_FILES['file'])) {
     http_response_code(400);
@@ -12,6 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_FILES['file'])) {
 
 $file = $_FILES['file'];
 if ($file['error'] === UPLOAD_ERR_OK) {
+    if ($usedBytes + $file['size'] > MAX_STORAGE_BYTES) {
+        http_response_code(400);
+        echo json_encode(['error' => 'storage limit exceeded']);
+        exit;
+    }
     $stored = bin2hex(random_bytes(16)) . '_' . basename($file['name']);
     $dest = __DIR__ . '/../uploads/' . $stored;
     if (move_uploaded_file($file['tmp_name'], $dest)) {

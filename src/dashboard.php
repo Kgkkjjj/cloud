@@ -3,20 +3,26 @@ require_once 'config.php';
 require_login();
 
 $db = get_db();
+$usedBytes = user_storage_used(current_user()['id']);
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     $file = $_FILES['file'];
     if ($file['error'] === UPLOAD_ERR_OK) {
-        $stored = bin2hex(random_bytes(16)) . '_' . basename($file['name']);
-        $dest = __DIR__ . '/uploads/' . $stored;
-        if (move_uploaded_file($file['tmp_name'], $dest)) {
-            $stmt = $db->prepare('INSERT INTO files (user_id, filename, stored_name, size, mime_type) VALUES (?, ?, ?, ?, ?)');
-            $stmt->execute([
-                current_user()['id'],
-                $file['name'],
-                $stored,
-                $file['size'],
-                $file['type']
-            ]);
+        if ($usedBytes + $file['size'] > MAX_STORAGE_BYTES) {
+            $error = 'Storage limit exceeded';
+        } else {
+            $stored = bin2hex(random_bytes(16)) . '_' . basename($file['name']);
+            $dest = __DIR__ . '/uploads/' . $stored;
+            if (move_uploaded_file($file['tmp_name'], $dest)) {
+                $stmt = $db->prepare('INSERT INTO files (user_id, filename, stored_name, size, mime_type) VALUES (?, ?, ?, ?, ?)');
+                $stmt->execute([
+                    current_user()['id'],
+                    $file['name'],
+                    $stored,
+                    $file['size'],
+                    $file['type']
+                ]);
+                $usedBytes += $file['size'];
+            }
         }
     }
 }
@@ -42,11 +48,12 @@ $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </header>
 <div class="container">
 <h1>Welcome, <?php echo htmlspecialchars(current_user()['username']); ?></h1>
+<?php if (!empty($error)) echo '<p style="color:red">'.htmlspecialchars($error).'</p>'; ?>
 <?php
 $count = count($files);
 $totalSize = array_sum(array_column($files, 'size'));
 ?>
-<p>You have <?php echo $count; ?> file(s) using <?php echo $totalSize; ?> bytes.</p>
+<p>You have <?php echo $count; ?> file(s) using <?php echo $totalSize; ?> bytes (<?php echo $usedBytes; ?> of <?php echo MAX_STORAGE_BYTES; ?> allowed).</p>
 <h2>Upload File</h2>
 <form method="post" enctype="multipart/form-data">
     <input type="file" name="file">
