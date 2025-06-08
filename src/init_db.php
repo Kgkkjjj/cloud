@@ -16,6 +16,7 @@ $db->exec("CREATE TABLE IF NOT EXISTS files (
     stored_name TEXT NOT NULL,
     size INTEGER NOT NULL,
     mime_type TEXT NOT NULL,
+    share_token TEXT UNIQUE,
     uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );");

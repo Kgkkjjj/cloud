@@ -37,4 +37,15 @@ function log_activity($userId, $action, $filename = null) {
     $stmt->execute([$userId, $action, $filename]);
 }
 
+function generate_share_token() {
+    return bin2hex(random_bytes(16));
+}
+
+function file_by_token($token) {
+    $db = get_db();
+    $stmt = $db->prepare('SELECT * FROM files WHERE share_token = ?');
+    $stmt->execute([$token]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 ?>

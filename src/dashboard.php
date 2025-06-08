@@ -63,18 +63,26 @@ $totalSize = array_sum(array_column($files, 'size'));
 </form>
 <h2>Your Files</h2>
 <table>
-<tr><th>Name</th><th>Size</th><th>Type</th><th>Uploaded</th><th></th></tr>
+<tr><th>Name</th><th>Size</th><th>Type</th><th>Uploaded</th><th>Share</th><th></th></tr>
 <?php foreach ($files as $f): ?>
     <tr>
         <td><a href="uploads/<?php echo urlencode($f['stored_name']); ?>" download><?php echo htmlspecialchars($f['filename']); ?></a></td>
         <td><?php echo $f['size']; ?></td>
         <td><?php echo htmlspecialchars($f['mime_type']); ?></td>
         <td><?php echo $f['uploaded_at']; ?></td>
+        <td>
+            <?php if ($f['share_token']): ?>
+                <a class="btn" href="public.php?token=<?php echo urlencode($f['share_token']); ?>" target="_blank">Link</a>
+                <a class="btn" href="share.php?id=<?php echo $f['id']; ?>&unshare=1">Unshare</a>
+            <?php else: ?>
+                <a class="btn" href="share.php?id=<?php echo $f['id']; ?>">Share</a>
+            <?php endif; ?>
+        </td>
         <td><a class="btn" href="delete.php?id=<?php echo $f['id']; ?>" onclick="return confirm('Delete this file?');">Delete</a></td>
     </tr>
 <?php endforeach; ?>
 </table>
-<p>APIs: <a href="api/files.php">List Files</a>, <a href="api/profile.php">Profile</a></p>
+<p>APIs: <a href="api/files.php">List Files</a>, <a href="api/profile.php">Profile</a>, <a href="api/share.php">Share</a></p>
 </div>
 </body>
 </html>
