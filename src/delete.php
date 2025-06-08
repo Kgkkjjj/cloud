@@ -13,6 +13,7 @@ if ($file) {
         unlink($path);
     }
     $db->prepare('DELETE FROM files WHERE id = ?')->execute([$id]);
+    log_activity(current_user()['id'], 'delete', $file['stored_name']);
 }
 header('Location: dashboard.php');
 exit;

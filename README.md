@@ -1,6 +1,6 @@
 # Simple PHP File Hosting Demo
 
-This repository contains a minimal PHP application that demonstrates a basic cloud storage system. Users can register, log in, upload files, and download them later. Each account can store up to **30 GiB** of data. Uploaded files are stored on the server, and a small API endpoint returns a JSON list of a user's files. Additional metadata such as file size and type are tracked, and files can be deleted from the dashboard. A profile page allows password changes and a simple API provides programmatic upload and delete capabilities. A new statistics page shows disk, memory, and load information for the server.
+This repository contains a minimal PHP application that demonstrates a basic cloud storage system. Users can register, log in, upload files, and download them later. Each account can store up to **30 GiB** of data. Uploaded files are stored on the server, and a small API endpoint returns a JSON list of a user's files. Additional metadata such as file size and type are tracked, and files can be deleted from the dashboard. A profile page allows password changes and a simple API provides programmatic upload and delete capabilities. A new statistics page shows disk, memory, and load information for the server. Recent activity is recorded and viewable on its own page or via an API.
 
 ## Features
 - User registration and login using SQLite
@@ -10,6 +10,7 @@ This repository contains a minimal PHP application that demonstrates a basic clo
 - Profile page with password change form
 - API endpoints for uploading and deleting files
 - Server statistics page with disk and memory usage
+- Activity log page showing recent uploads and deletions
 - Each account includes up to **30 GiB** of storage
 
 ### APIs
@@ -18,6 +19,7 @@ This repository contains a minimal PHP application that demonstrates a basic clo
 * `POST /api/delete.php` with `id` - delete a file
 * `GET /api/profile.php` - current user details
 * `GET /api/stats.php` - server statistics
+* `GET /api/activity.php` - recent upload/delete events
 
 ## Setup
 1. Ensure PHP with SQLite support is installed.

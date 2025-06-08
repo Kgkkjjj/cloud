@@ -31,4 +31,10 @@ function user_storage_used($userId) {
     return (int)$stmt->fetchColumn();
 }
 
+function log_activity($userId, $action, $filename = null) {
+    $db = get_db();
+    $stmt = $db->prepare('INSERT INTO activity (user_id, action, filename) VALUES (?, ?, ?)');
+    $stmt->execute([$userId, $action, $filename]);
+}
+
 ?>

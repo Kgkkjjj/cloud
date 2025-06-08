@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
                     $file['size'],
                     $file['type']
                 ]);
+                log_activity(current_user()['id'], 'upload', $file['name']);
                 $usedBytes += $file['size'];
             }
         }
@@ -43,6 +44,7 @@ $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="dashboard.php">Dashboard</a>
         <a href="profile.php">Profile</a>
         <a href="stats.php">Stats</a>
+        <a href="activity.php">Activity</a>
         <a href="logout.php">Logout</a>
     </nav>
 </header>

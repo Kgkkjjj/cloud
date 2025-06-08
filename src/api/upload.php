@@ -29,6 +29,7 @@ if ($file['error'] === UPLOAD_ERR_OK) {
             $file['size'],
             $file['type']
         ]);
+        log_activity(current_user()['id'], 'upload', $file['name']);
         echo json_encode(['success' => true]);
         exit;
     }

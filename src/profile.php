@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="dashboard.php">Dashboard</a>
         <a href="profile.php">Profile</a>
         <a href="stats.php">Stats</a>
+        <a href="activity.php">Activity</a>
         <a href="logout.php">Logout</a>
     </nav>
 </header>

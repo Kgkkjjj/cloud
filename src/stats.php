@@ -37,6 +37,7 @@ $memUsed = $memTotal ? $memTotal - $memFree : 0;
         <a href="dashboard.php">Dashboard</a>
         <a href="profile.php">Profile</a>
         <a href="stats.php">Stats</a>
+        <a href="activity.php">Activity</a>
         <a href="logout.php">Logout</a>
     </nav>
 </header>

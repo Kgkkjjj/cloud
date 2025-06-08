@@ -11,6 +11,7 @@ if ($file) {
     $path = __DIR__ . '/../uploads/' . $file['stored_name'];
     if (is_file($path)) unlink($path);
     $db->prepare('DELETE FROM files WHERE id = ?')->execute([$id]);
+    log_activity(current_user()['id'], 'delete', $file['stored_name']);
     echo json_encode(['success' => true]);
     exit;
 }
